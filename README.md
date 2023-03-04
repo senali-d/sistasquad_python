@@ -5,6 +5,7 @@
 - djangorestframework=3.14.0
 - psycopg2-binary
 - django-cors-headers=3.13.0
+- unicorn==20.1.0
 
 ## Project setup
 
