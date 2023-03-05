@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import get_user_model
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
   @classmethod
@@ -33,3 +34,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     user.set_password(validated_data['password'])
     user.save()
     return user
+
+class ProfileSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = get_user_model()
+    fields = ['id', 'username', 'email', 'first_name', 'last_name']

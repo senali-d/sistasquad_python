@@ -6,7 +6,7 @@ from rest_framework import generics
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from .serializers import TokenObtainPairSerializer, RegisterSerializer
+from .serializers import ProfileSerializer, TokenObtainPairSerializer, RegisterSerializer
 
 class MyTokenObtainPairView(TokenObtainPairView):
   serializer_class = TokenObtainPairSerializer
@@ -18,5 +18,12 @@ class RegisterView(generics.CreateAPIView):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def getProfile(request):
-  return Response(status=status.HTTP_200_OK)
+def getProfile(request, id):
+  profile = User.objects.get(id=id)
+  if not profile:
+    return Response(
+      {'res': f'Profile with id {id} does not exists.'},
+      status=status.HTTP_400_BAD_REQUEST
+    )
+  serializer = ProfileSerializer(profile)
+  return Response(serializer.data, status=status.HTTP_200_OK)
